@@ -1,0 +1,91 @@
+- name: sg_rules
+  sg:
+  - expense-dev-db
+  - expense-dev-backend
+  - expense-dev-frontend
+  - expense-dev-bastion
+  - expense-dev-app-alb #backend alb
+  - expense-dev-vpn
+  - expense-dev-web_alb
+
+
+  vpn:
+  - name: vpn_public
+    desc: vpn accepting connection from public
+    source: public
+    port: 22, 943, 443, 1194
+  db:
+  - name: db_backend
+    desc: db accepting connection from backend
+    source: backend
+    port: 3306
+  - name: db_bastion
+    desc: db accepting connection from bastion
+    source: bastion
+    port: 3306
+  - name: db_vpn
+    desc: db accepting connection from vpn
+    source: vpn
+    port: 3306
+  app_alb:
+  - name: app_alb_vpn
+    desc: app alb accepting connection from vpn 
+    source: vpn
+    port: 80
+  - name: app_alb_frontend
+    desc: app alb accepting connection from frontend 
+    source: frontend
+    port: 80
+  - name: app_alb_bastion
+    desc: app alb accepting connection from bastion 
+    source: bastion
+    port: 80
+
+  backend: 
+  - name: backends_app_alb
+    desc: backend accepting connection from app alb 
+    source: app_alb 
+    port: 8080
+  - name: backend_bastion
+    desc: backend accepting connection from bastion
+    source: bastion
+    port: 22
+  - name: backend_vpn_ssh
+    desc: backend accepting connection from vpn ssh
+    source: vpn
+    port: 22
+  - name: backend_vpn_http
+    desc: backend accepting connection from vpn http
+    source: vpn
+    port: 8080
+
+
+  frontend: 
+  - name: frontend_vpn
+    desc: frontend accepting connection from vpn
+    source: vpn
+    port: 22  
+  - name: frontend_bastion
+    desc: frontend accepting connection from bastion
+    source: bastion
+    port: 22
+  - name: frontend_web_alb
+    desc: frontend accepting connection from web alb
+    source: web_alb
+    port: 80
+  web_alb:
+  - name: web_alb_public
+    desc: web_alb accepting connection from public
+    source: public
+    port: 80
+  - name: web_alb_public_https
+    desc: web_alb accepting connection from public https
+    source: public
+    port: 443
+  bastion:
+  - name: bastion_public
+    desc: bastion accepting connection from public
+    source: bastion # ideally your home IP address
+    port: 22
+
+
