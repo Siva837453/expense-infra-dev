@@ -1,0 +1,44 @@
+pipeline {
+    agent {
+        label 'AGENT-1'
+    }
+    options {
+        timeout(time: 30, unit:'MINUTES')
+        disableConcurrentBuilds()
+    }
+    environment{
+        DEPLOY_TO = "Production"
+        GREETING = " Good morning"
+    }
+    stages {
+        stage('init') {
+            steps {
+                sh 'echo this is Build'
+                sh 'env'
+            }
+        }
+        stage('plan') {
+            steps {
+                sh 'echo this is Test'
+                sh 'sleep 20'
+            }
+        }
+        stage('apply') {
+            steps {
+                sh 'echo this is Deploy'
+            }
+        }
+        
+    }
+    post{
+        always{
+            echo " i will always say hellow again"
+        }
+        success{
+            echo " i will run when pipeline is success"
+        }
+        failure{
+            echo " i will run when pipeline is failure"
+        }
+    }
+}
