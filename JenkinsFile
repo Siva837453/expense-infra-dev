@@ -13,8 +13,9 @@ pipeline {
     stages {
         stage('init') {
             steps {
-                sh 'echo this is Build'
-                sh 'env'
+                sh """
+                ls -ltr
+                """
             }
         }
         stage('plan') {
