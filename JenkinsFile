@@ -8,11 +8,9 @@ pipeline {
         ansiColor('xterm')
     }
     parameters{
-        choice(name: 'action' choices:['Apply', 'Destroy'], description: 'Pick something')
+        choice(name: 'action', choices:['Apply', 'Destroy'], description: 'Pick something')
     }
-    environment{
-        DEPLOY_TO = "Production"
-        GREETING = " Good morning"
+    
     }
     stages {
         stage('init') {
