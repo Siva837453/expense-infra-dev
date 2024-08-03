@@ -11,7 +11,7 @@ pipeline {
         choice(name: 'action', choices:['Apply', 'Destroy'], description: 'Pick something')
     }
 
-    
+}  
     stages {
         stage('init') {
             steps {
@@ -22,6 +22,11 @@ pipeline {
             }
         }
         stage('plan') {
+            when{
+                expression{
+                    params.action == 'Apply'
+                }
+            }
             
             steps {
                 sh """
@@ -31,6 +36,10 @@ pipeline {
             }
         }
         stage('deploy') {
+            when{
+                expression{
+                    params.action == 'Apply'
+                }
             input {
                 message "Should we continue?"
                 ok "Yes, we should."
@@ -44,6 +53,26 @@ pipeline {
         }
         
     }
+
+        stage('Destroy') {
+            when{
+                expression{
+                    params.action == 'Destroy'
+                }
+            input {
+                message "Should we continue?"
+                ok "Yes, we should."
+            }
+            steps {
+                sh """
+                 cd 01-vpc
+                 terraform destroy --auto-approve
+                """
+            }
+        }
+        
+    }
+          
     post{
         always{
             echo " i will always say hellow again"
