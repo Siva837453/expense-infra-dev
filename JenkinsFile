@@ -11,7 +11,7 @@ pipeline {
         choice(name: 'action', choices:['Apply', 'Destroy'], description: 'Pick something')
     }
 
-}  
+  
     stages {
         stage('init') {
             steps {
@@ -40,6 +40,7 @@ pipeline {
                 expression{
                     params.action == 'Apply'
                 }
+            }
             input {
                 message "Should we continue?"
                 ok "Yes, we should."
@@ -52,13 +53,14 @@ pipeline {
             }
         }
         
-    }
+    
 
         stage('Destroy') {
             when{
                 expression{
                     params.action == 'Destroy'
                 }
+            }
             input {
                 message "Should we continue?"
                 ok "Yes, we should."
